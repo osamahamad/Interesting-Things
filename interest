@@ -1,0 +1,196 @@
+#!/bin/bash
+
+
+
+# Word lists - Change - 
+http_FFUF_wordlist="/lists/quickhits-2000.txt";
+https_FFUF_wordlist="/lists/quickhits-2000.txt";
+ffuf_sub_list="/wordlists/SecLists/Discovery/DNS/medium-words.txt";
+
+
+# nuclei_template - Change - 
+nuclei_template="/tools/nuclei-templates/";
+zilePATH="/tools/zile/zile.py"; 
+
+
+# Control tool running time. - Change - ( in secconds )
+
+gau_timelimit="60";
+hakrawler_timelimit="60";
+gospider_timelimit="60";
+
+
+
+# Bot 
+
+telegram_bot_access_token="xx"; # Change 
+telegram_group_id="xx";
+
+
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+
+hi="
+Osama Hamad
+Github.com/osamahamad
+info@ousama.co
+";
+printf "${green}${hi}${reset}"
+
+if [ -z "$1" ]
+then
+echo " No argument specified : $0	site.co "
+
+
+else
+
+message () {
+	
+	
+	alert="https://api.telegram.org/bot$telegram_bot_access_token/sendmessage?chat_id=-$telegram_group_id&text="
+	curl -g $alert$1 --silent > /dev/null
+}
+
+
+
+
+message Tool%3A%20Interesting-Things%0A%0ATarget%3A${1}%0AScan%20started%20in%20$(date | jq -sRr @uri) ;
+
+
+
+echo -e "${green}Fuzzing Main Directory${reset}" ;
+echo "Running Fuzz Faster U Fucker" ;
+
+
+
+mkdir interesting-targets; cd interesting-targets ; mkdir $1 ; cd $1 ;
+
+
+filename=$(echo $1 | sed 's/http:\/\///g' | sed 's/https:\/\//ssl-/g')
+
+
+a=$(curl --insecure "https://$i/nonexistentpageoffcourse" -w "%{size_download}" -o /dev/null --max-time 8)
+b=$(curl --insecure "https://$1/.xzhgf" -w "%{size_download}" -o /dev/null --max-time 8)
+c=$(curl --insecure "https://$1/nonexistentpageoffcourse.php" -w "%{size_download}" -o /dev/null --max-time 8)
+d=$(curl --insecure "https://$1/nonexistentpageoffcourse.html" -w "%{size_download}" -o /dev/null --max-time 8)
+e=$(curl --insecure "https://$1/nonexistentpageoffcourse/" -w "%{size_download}" -o /dev/null --max-time 8)
+
+
+
+fuf -w $https_FFUF_wordlist -t 500 -u https://$1/FUZZ -fs $a,$b,$c,$d,$e -o https-$filename-ffuf.html -of html -maxtime 8640
+
+echo -e "${green}###############################${reset}"
+
+f=$(curl --insecure "http://$1/nonexistentpageoffcourse/" -w "%{size_download}" -o /dev/null --max-time 8)
+g=$(curl --insecure "http://$1/.xzhgf" -w "%{size_download}" -o /dev/null --max-time 8)
+h=$(curl --insecure "http://$1/nonexistentpageoffcourse.php" -w "%{size_download}" -o /dev/null --max-time 8)
+i=$(curl --insecure "http://$1/nonexistentpageoffcourse.html" -w "%{size_download}" -o /dev/null --max-time 8)
+j=$(curl --insecure "http://$1/nonexistentpageoffcourse/" -w "%{size_download}" -o /dev/null --max-time 8)
+
+fuf -w $http_FFUF_wordlist -t 500 -u http://$1/FUZZ -fs $f,$g,$h,$i,$j -o http-$filename-ffuf.html -of html -maxtime 8640
+
+
+
+echo -e "${green}Fuzzing Subdomains${reset}" 
+echo "Running Fuzz Faster U Fucker" 
+
+fuf -w $ffuf_sub_list -u http://FUZZ.$1 -H "X-Forwarded-For: 127.0.0.1" -t 600 | tee -a fuf_subdomains.out 
+
+
+
+
+echo -e "${green}###############################${reset}"
+
+echo "${green}<--- ! Scrap - Spider - Leak  ! --->${reset}";
+
+mkdir scrap; cd scrap;
+echo -e "${green}<--- + Running GAU  + --->${reset}";
+
+timelimit -t $gau_timelimit gau -subs $1 | tee -a gau.out
+
+echo -e "${green}<--- + Running Hakrawler  + --->${reset}";
+timelimit -t $hakrawler_timelimit hakrawler -plain -depth 5 -url $x | tee -a hakrawler.out 
+
+echo -e "${green}<--- + Running Gospider  + --->${reset}";
+
+timelimit -t $gospider_timelimit gospider -s http://$1 -t 300 -d 0 -c 300 --other-source --include-subs | tee -a gospider.out
+
+
+echo -e "${green}<--- + Extract all the URLS + Filter JS from recent scan results  + --->${reset}";
+
+cat gau.out hakrawler.out gospider.out | xurls | sort -u > all-urls.out 
+cat all-urls.out | grep ".js$" | sort -u > all-js-urls.out 
+cat all-urls.out | xurls | grep ".js?" | sort -u >> all-js-urls.out 
+
+mkdir patterns ; cd patterns ;
+
+cat ../all-urls.out | grep "$1" | gf debug_logic > debug_logic.out 
+cat ../all-urls.out | grep "$1" | gf idor > idor.out 
+cat ../all-urls.out | grep "$1" | gf img-traversal > img-traversal.out
+cat ../all-urls.out | grep "$1" | gf interestingEXT > interestingEXT.out
+cat ../all-urls.out | grep "$1" | gf interestingparams > interestingparams.out
+cat ../all-urls.out | grep "$1" | gf interestingsubs > interestingsubs.out
+cat ../all-urls.out | grep "$1" | gf jsvar > jsvar.out 
+cat ../all-urls.out | grep "$1" | gf lfi > lfi.out 
+cat ../all-urls.out | grep "$1" | gf rce > rce.out
+cat ../all-urls.out | grep "$1" | gf redirect > redirect.out
+cat ../all-urls.out | grep "$1" | gf sqli > sqli.out
+cat ../all-urls.out | grep "$1" | gf ssrf > ssrf.out
+cat ../all-urls.out | grep "$1" | gf ssti > ssti.out
+cat ../all-urls.out | grep "$1" | gf xss > xss.out 
+
+
+cd ../../ ;
+
+echo -e "${green}###############################${reset}"
+
+echo -e "${green}<--- + Running Nuclei  + --->${reset}";
+printf "https://$1 \nhttp://$1\n" > target.out
+
+mkdir nuclei; 
+nuclei -l target.out -t "$nuclei_template/cves/*.yaml" -o nuclei/cves.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/panels/*.yaml" -o nuclei/panels.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/security-misconfiguration/*.yaml" -o nuclei/security-misconfiguration.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/technologies/*.yaml" -o nuclei/technologies.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/vulnerabilities/*.yaml" -o nuclei/vulnerabilities.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/tokens/*.yaml" -o nuclei/tokens.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/files/*.yaml" -o nuclei/files.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/basic-detections/*.yaml" -o nuclei/basic-detections.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/brute-force/*.yaml" -o nuclei/brute-force.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/dns/*.yaml" -o nuclei/dns.txt -c 100;/
+nuclei -l target.out -t "$nuclei_template/subdomain-takeover/*.yaml" -o nuclei/subdomain-takeover.txt -c 100;
+nuclei -l target.out -t "$nuclei_template/tokens/*.yaml" -o nuclei/tokens.txt -c 100;
+
+
+
+echo -e "${green}###############################${reset}"
+
+echo -e "${green}<--- + Running NMAP  + --->${reset}";
+
+
+mkdir NMAP ; cd NMAP ;
+wget https://raw.githubusercontent.com/honze-net/nmap-bootstrap-xsl/master/nmap-bootstrap.xsl ;
+nmap -p1-65535 --min-parallelism 150 $1 -sV --stylesheet nmap-bootstrap.xsl --script vulners,ssl-poodle -oA nmap-scan-result ;
+xsltproc nmap-scan-result.xml -o nmap-scan-result.html;
+cd ../;
+
+
+cd scrap;
+
+
+cat all-urls.out | python3 $zilePATH --request | tee -a zile.out 
+
+cd ../;
+
+
+
+
+
+message Tool%3A%20Interesting-Things%0A%0ATarget%3A%241%0A%0AScan%20finished%20in%20%0A%0A%0A$(date | jq -sRr @uri) ;
+
+
+
+echo -e "${green}Done.${reset}"
+
+fi
