@@ -78,7 +78,7 @@ e=$(curl --insecure "https://$1/nonexistentpageoffcourse/" -w "%{size_download}"
 
 
 
-fuf -w $https_FFUF_wordlist -t 500 -u https://$1/FUZZ -fs $a,$b,$c,$d,$e -o https-$filename-ffuf.html -of html -maxtime 8640
+ffuf -w $https_FFUF_wordlist -t 500 -u https://$1/FUZZ -fs $a,$b,$c,$d,$e -o https-$filename-ffuf.html -of html -maxtime 8640
 
 echo -e "${green}###############################${reset}"
 
@@ -88,7 +88,7 @@ h=$(curl --insecure "http://$1/nonexistentpageoffcourse.php" -w "%{size_download
 i=$(curl --insecure "http://$1/nonexistentpageoffcourse.html" -w "%{size_download}" -o /dev/null --max-time 8)
 j=$(curl --insecure "http://$1/nonexistentpageoffcourse/" -w "%{size_download}" -o /dev/null --max-time 8)
 
-fuf -w $http_FFUF_wordlist -t 500 -u http://$1/FUZZ -fs $f,$g,$h,$i,$j -o http-$filename-ffuf.html -of html -maxtime 8640
+ffuf -w $http_FFUF_wordlist -t 500 -u http://$1/FUZZ -fs $f,$g,$h,$i,$j -o http-$filename-ffuf.html -of html -maxtime 8640
 
 
 
