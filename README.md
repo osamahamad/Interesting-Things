@@ -42,8 +42,8 @@ Make sure you have these tools installed and works globally.
 [xurls](https://github.com/mvdan/xurls),
 [gf](https://github.com/tomnomnom/gf),
 [NMAP](https://github.com/nmap/nmap),
-[gf-patterns](https://github.com/1ndianl33t/Gf-Patterns)
-
+[gf-patterns](https://github.com/1ndianl33t/Gf-Patterns),
+[zile](https://github.com/xyele/zile)
 
 - Configurations
 
@@ -143,7 +143,8 @@ All these tools creators :
 [xurls](https://github.com/mvdan/xurls),
 [gf](https://github.com/tomnomnom/gf),
 [NMAP](https://github.com/nmap/nmap),
-[gf-patterns](https://github.com/1ndianl33t/Gf-Patterns)
+[gf-patterns](https://github.com/1ndianl33t/Gf-Patterns),
+[zile](https://github.com/xyele/zile)
 
 @phspade for the function of telegram bot messages , I like it more than slack actually ( didn't know about it before ) and convert mostly all my tools from slack notification to telegram.
 
