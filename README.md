@@ -1,7 +1,7 @@
 # Interesting-Things
 Single-WebApp-Target essentials scanning methodology tool starting at recon-information gathering for the juicy stuff ended up in exploitation.<br><br>
 
-Let's suppose and you are browsing your gathered main host subdomains or you are in the process of the exploitation for specific target and faced a host that you need to :
+Let's suppose you are browsing your gathered main host subdomains or you are in the process of the exploitation for specific target and faced a host that you need to :
 
 
 ```
