@@ -6,15 +6,15 @@ Let's suppose you are browsing your gathered main host subdomains or you are in 
 
 ```
 - Fuzz it's main directory without getting a lot of flase positives during content-discovery process.
-- Fuzz it's subdomains , looking for nice hidden services or administrator dashboards.
-- Gather it's URLS from more than one resource and spidering the host looking for different functionalities , content managments systems or just more params.
+- Fuzz it's subdomains, looking for hidden services or administrator dashboards.
+- Gather it's URLS from more than one resource and spidering the host looking for different functionalities, content managments systems or just more params.
 - Filter - Grep - Sed those URLS results into common vulnerabilities effecting extract params and get/save gathered JS files to make the next steps more clear.
 - Scan it's ports with services detections plus find out public CVE's related to those services and output the results to grepable text files , xml and nice looking HTML template.
-- Running blind new common application CVE's detection scripts , common security misconfigurations , sub-takeover scanning and more.
-- Setting time limit in secconds for each work process to be clear with your piority into the targeted host and avoiding taking too much time on gathering process for specific hosts.
+- Running new common application CVE's detection scripts, common security misconfigurations, sub-takeover scanning and more.
+- Use timelimit command to control running process time to avoid taking too much time on gathering process for specific hosts and focusing more on exploitation phase.
 ```
 
-Instead of doing all of this by running a single command line for each process and move you make , you can do it all on one command to make it much easier to understand host different functionalities and navigate to manual testing or process the output files as input for another exploitation tools.
+Instead of doing all of this by running a single command line for each process and move you make, you can do it all on one command to make it much easier to understand host different functionalities and navigate to manual testing or process the output files as input for another exploitation tools.
 
 
 
@@ -146,6 +146,6 @@ All these tools creators :
 [gf-patterns](https://github.com/1ndianl33t/Gf-Patterns),
 [zile](https://github.com/xyele/zile)
 
-@phspade for the function of telegram bot messages , I like it more than slack actually ( didn't know about it before ) and convert mostly all my tools from slack notification to telegram.
+@phspade for the function of telegram bot messages, I like it more than slack actually ( didn't know about it before ) and convert mostly all my tools from slack notification to telegram.
 
 InfoSec Community.
